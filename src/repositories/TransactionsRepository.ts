@@ -24,27 +24,50 @@ class TransactionsRepository {
   };
 
   public getBalance(): Balance {
-    // TODO
-    let income = 0;
-    let outcome = 0;
-    const allTransactions = this.transactions
+    // Usando REDUCE
 
-    allTransactions.filter(transaction => {
-      if (transaction.type === 'income') {
-        income = income + transaction.value
-      } else {
-        outcome = outcome + transaction.value
+    const {income, outcome} = this.transactions.reduce((accumulator, transacition) => {
+      switch (transacition.type) {
+        case "income":
+          accumulator.income += transacition.value
+          break
+        case "outcome":
+          accumulator.outcome = + transacition.value;
+          break
+        default:
+          break
       }
+      return accumulator
+    }, {
+      income: 0,
+      outcome: 0,
+      total: 0
     })
 
     const total = income - outcome
-    const responseBalance = {
-      income,
-      outcome,
-      total,
-    }
 
-    return responseBalance
+    return {income, outcome, total}
+    // // usando filtro
+    //     let income = 0;
+    //     let outcome = 0;
+    //     const allTransactions = this.transactions
+
+    //     allTransactions.filter(transaction => {
+    //       if (transaction.type === 'income') {
+    //         income = income + transaction.value
+    //       } else {
+    //         outcome = outcome + transaction.value
+    //       }
+    //     })
+
+    //     const total = income - outcome
+    //     const responseBalance = {
+    //       income,
+    //       outcome,
+    //       total,
+    //     }
+
+    //     return responseBalance
 
   };
 
